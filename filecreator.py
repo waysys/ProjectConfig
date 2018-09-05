@@ -309,6 +309,7 @@ class PropertyCreator(FileCreator):
         Generate the full path to the test suite
         """
         path = self.pcf.root + "/" + "TESTSUITES/" + self.pcf.product
+        path += "/" + self.pcf.project
         path += "/" + test_suite
         path = PropertyCreator.double_backslash(path)
         return path

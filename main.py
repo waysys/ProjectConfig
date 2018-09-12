@@ -172,7 +172,7 @@ def validate_test_suites(root, product, project, test_suites):
         raise ProjectConfigException(message)
     for test_suite in test_suites:
         suite_dir = test_suite_project_dir + "/" + test_suite
-        if not is_dir(test_suite_project_dir):
+        if not is_dir(suite_dir):
             message = "Suite directory does not exist - " + suite_dir
             raise ProjectConfigException(message)
     return

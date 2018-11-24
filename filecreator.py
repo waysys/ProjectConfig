@@ -40,7 +40,7 @@ username=su
 password=gw
 testsuite=${testsuite}
 reports=${reports}
-timeout=480000
+timeout=960000
 """
 
 ports = {

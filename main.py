@@ -82,7 +82,7 @@ def process(project_config_filename):
                       project_config.project)
     validate_test_suites(project_config.root,
                          project_config.product,
-                         project_config.project,
+                         project_config.test_suite_directory,
                          project_config.test_suites)
     bat_creator = BatFileCreator(project_config)
     bat_creator.create_rungfit()
@@ -149,13 +149,13 @@ def validate_exec_dir(root, environment, product, project):
     return project_path
 
 
-def validate_test_suites(root, product, project, test_suites):
+def validate_test_suites(root, product, test_suite_dir, test_suites):
     """Check that the directories holding the test suites exist.
 
     Arguments:
         root - the root exec directory
         product - the Guidewire product abbreviation, for example BC
-        project - the name of the project
+        test_suite_dir - the name of the directory that holds the test suites
         test_suites - a list of test suites
     """
     test_suite_root = root + "/TESTSUITES"
@@ -166,7 +166,7 @@ def validate_test_suites(root, product, project, test_suites):
     if not is_dir(test_suite_product_dir):
         message = "Test suite root  directory does not exist - " + test_suite_product_dir
         raise ProjectConfigException(message)
-    test_suite_project_dir = test_suite_product_dir + "/" + project
+    test_suite_project_dir = test_suite_product_dir + "/" + test_suite_dir
     if not is_dir(test_suite_project_dir):
         message = "Test suite root  directory does not exist - " + test_suite_project_dir
         raise ProjectConfigException(message)

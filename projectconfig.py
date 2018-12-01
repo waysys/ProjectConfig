@@ -16,7 +16,7 @@
 # -------------------------------------------------------------------------------
 
 __author__ = 'Bill Shaffer'
-__version__ = "1.00"
+__version__ = "1.01"
 
 from projectconfigexception import ProjectConfigException
 import xml.etree.ElementTree as Et
@@ -123,6 +123,17 @@ class ProjectConfig:
                 message = "No test suites were found"
                 raise ProjectConfigException(message)
         return self._test_suites
+
+    @property
+    def test_suite_directory(self):
+        """
+        Return the name of the directory that contains the test suites.  This directory usually has the same name
+        as the Jenkins project name, but in some cases it will be different
+        """
+        suite_name = self.project
+        if ProjectConfig.has_element(self.configuration, "SuiteDirectory"):
+            suite_name = ProjectConfig.fetch_text(self.configuration, "SuiteDirectory")
+        return suite_name
 
     @property
     def server(self):

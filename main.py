@@ -26,6 +26,7 @@ from projectconfig import ProjectConfig
 from pathlib import Path
 from filecreator import BatFileCreator
 from filecreator import PropertyCreator
+from generatepipeline import PipelineGenerator
 
 """
 This module executes the Project Configuration tool.  This tool creates and checks
@@ -75,8 +76,10 @@ def process(project_config_filename):
     project_config = ProjectConfig(project_config_filename)
     project_config.parse()
     validate_root(project_config.root)
-    validate_workspace(project_config.workspace, project_config.environment, project_config.project)
-    validate_exec_dir(project_config.root,
+    workspace_path = validate_workspace(project_config.workspace,
+                                        project_config.environment,
+                                        project_config.project)
+    run_file = validate_exec_dir(project_config.root,
                       project_config.environment,
                       project_config.product,
                       project_config.project)
@@ -88,6 +91,8 @@ def process(project_config_filename):
     bat_creator.create_rungfit()
     properties_creator = PropertyCreator(project_config)
     properties_creator.create_properties_files()
+    pipeline_generator = PipelineGenerator(project_config)
+    pipeline_generator.output_pipeline(workspace_path, run_file)
     return
 
 
@@ -100,7 +105,11 @@ def validate_root(root_dir):
 
 
 def validate_workspace(workspace, environment, project):
-    """Check that the components of the workspace are present"""
+    """
+    Check that the components of the workspace are present.
+    Return the full path of the workspece
+
+    """
     if not is_dir(workspace):
         message = "Workspace directory does not exist - " + workspace
         raise ProjectConfigException(message)
@@ -114,7 +123,7 @@ def validate_workspace(workspace, environment, project):
         create_dir(project_path)
     project_path = project_path.replace("/", "\\")
     print("Jenkins workspace is: " + project_path)
-    return
+    return project_path
 
 
 def validate_exec_dir(root, environment, product, project):
@@ -146,7 +155,7 @@ def validate_exec_dir(root, environment, product, project):
     batch_command = project_path + "/rungfit.bat"
     batch_command = batch_command.replace("/", "\\")
     print("Jenkins batch command is: " + batch_command)
-    return project_path
+    return batch_command
 
 
 def validate_test_suites(root, product, test_suite_dir, test_suites):

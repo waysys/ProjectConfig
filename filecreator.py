@@ -16,7 +16,7 @@
 # -------------------------------------------------------------------------------
 
 __author__ = 'Bill Shaffer'
-__version__ = "1.00"
+__version__ = "1.01"
 
 """
 This module contains the BatFileCreator and PropertiesCreator classes.
@@ -37,7 +37,7 @@ java  -ea -jar %DRIVE%\\EXEC\\runGFIT.jar -prop %DRIVE%${property_file}
 properties_template = """
 url=${url}
 username=su
-password=gw
+password=P@ssw0rd
 testsuite=${testsuite}
 reports=${reports}
 timeout=9600000

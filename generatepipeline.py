@@ -84,6 +84,6 @@ class PipelineGenerator:
         content = Template(pipeline_template).substitute(subs)
         # Replace backslash with forward slash which can be handled Jenkins.
         # Jenkins treats the backslash as an escape characters in pipelines.
-        content = content.replace("\\", "/")
+        content = content.replace("\\", "\\\\")
         print(content)
         return
